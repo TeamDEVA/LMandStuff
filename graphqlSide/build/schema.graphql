@@ -1,0 +1,56 @@
+type Game @entity{ 
+  id: ID!
+  name: String
+
+  leagues: [League!]@derivedFrom(field: "game")
+}
+
+type League @entity {  
+  id: ID!
+  game: Game
+
+  totalPlayers: BigInt
+  totalPrize: BigInt
+
+  minEntry: BigInt
+  openTime: BigInt 
+  liveTime: BigInt 
+  closeTime: BigInt
+
+  status: String 
+  
+  players: [LeaguePlayer!]@derivedFrom(field: "league")
+  prizes: [Prize!]@derivedFrom(field: "league")
+}
+
+type Prize @entity{
+  id: ID! 
+  league: League
+  amount: BigInt
+  createdAt: BigInt
+  claimableBy: User
+  claimed: Boolean
+  claimedAt: BigInt
+}
+
+type LeaguePlayer @entity {
+  id: ID!
+  nickName: String 
+  joinedAt: BigInt
+  user: User
+  league: League
+  isWinner: Boolean
+  isBlocked: Boolean
+}
+
+type User @entity {
+  id: ID! 
+
+  address: String
+  totalLeagues: BigInt 
+  totalLeaguesWinner: BigInt 
+  isBlocked: Boolean
+
+  leaguePlayersByUser: [LeaguePlayer!]@derivedFrom(field: "user") 
+  prizes: [Prize!]@derivedFrom(field: "claimableBy")
+}

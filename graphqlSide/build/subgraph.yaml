@@ -1,0 +1,37 @@
+specVersion: 0.0.2
+schema:
+  file: schema.graphql
+dataSources:
+  - kind: ethereum/contract
+    name: LeagueMaker
+    network: chapel
+    source:
+      address: "0x109A7546010C953D7D82E3120B5467829fC12aC5"
+      abi: LeagueMaker
+      startBlock: 19736530
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.5
+      language: wasm/assemblyscript
+      entities:
+        - OwnershipTransferred
+        - leagueClosed
+        - leagueCreated
+        - leagueLive
+      abis:
+        - name: LeagueMaker
+          file: LeagueMaker\abis\LeagueMaker.json
+      eventHandlers:
+        - event: leagueCreated(uint256,string,uint256,uint256)
+          handler: handleLeagueCreated
+        - event: leagueLive(uint256,uint256)
+          handler: handleLeagueLive
+        - event: leagueClosed(uint256,uint256,string[],uint256)
+          handler: handleLeagueClosed
+        - event: leagueJoined(uint256,uint256,address,string,bool)
+          handler: handleLeagueJoined
+        - event: prizeClaimed(uint256,uint256,address,string,uint256)
+          handler: handlePrizeClaimed
+        - event: toggleBlockPlayerEvent(uint256,string)
+          handler: handleToggleBlockPlayerEvent
+      file: LeagueMaker\LeagueMaker.wasm
