@@ -538,6 +538,7 @@ export class User extends Entity {
     super();
     this.set("id", Value.fromString(id));
 
+    this.set("isAdmin", Value.fromBoolean(false));
     this.set("isBlocked", Value.fromBoolean(false));
   }
 
@@ -618,6 +619,15 @@ export class User extends Entity {
     }
   }
 
+  get isAdmin(): boolean {
+    let value = this.get("isAdmin");
+    return value!.toBoolean();
+  }
+
+  set isAdmin(value: boolean) {
+    this.set("isAdmin", Value.fromBoolean(value));
+  }
+
   get isBlocked(): boolean {
     let value = this.get("isBlocked");
     return value!.toBoolean();
@@ -662,5 +672,103 @@ export class User extends Entity {
     } else {
       this.set("prizes", Value.fromStringArray(<Array<string>>value));
     }
+  }
+}
+
+export class Log extends Entity {
+  constructor(id: string) {
+    super();
+    this.set("id", Value.fromString(id));
+
+    this.set("log", Value.fromString(""));
+  }
+
+  save(): void {
+    let id = this.get("id");
+    assert(id != null, "Cannot save Log entity without an ID");
+    if (id) {
+      assert(
+        id.kind == ValueKind.STRING,
+        "Cannot save Log entity with non-string ID. " +
+          'Considering using .toHex() to convert the "id" to a string.'
+      );
+      store.set("Log", id.toString(), this);
+    }
+  }
+
+  static load(id: string): Log | null {
+    return changetype<Log | null>(store.get("Log", id));
+  }
+
+  get id(): string {
+    let value = this.get("id");
+    return value!.toString();
+  }
+
+  set id(value: string) {
+    this.set("id", Value.fromString(value));
+  }
+
+  get log(): string {
+    let value = this.get("log");
+    return value!.toString();
+  }
+
+  set log(value: string) {
+    this.set("log", Value.fromString(value));
+  }
+}
+
+export class AllLog extends Entity {
+  constructor(id: string) {
+    super();
+    this.set("id", Value.fromString(id));
+
+    this.set("logs", Value.fromStringArray(new Array(0)));
+    this.set("nextId", Value.fromI32(0));
+  }
+
+  save(): void {
+    let id = this.get("id");
+    assert(id != null, "Cannot save AllLog entity without an ID");
+    if (id) {
+      assert(
+        id.kind == ValueKind.STRING,
+        "Cannot save AllLog entity with non-string ID. " +
+          'Considering using .toHex() to convert the "id" to a string.'
+      );
+      store.set("AllLog", id.toString(), this);
+    }
+  }
+
+  static load(id: string): AllLog | null {
+    return changetype<AllLog | null>(store.get("AllLog", id));
+  }
+
+  get id(): string {
+    let value = this.get("id");
+    return value!.toString();
+  }
+
+  set id(value: string) {
+    this.set("id", Value.fromString(value));
+  }
+
+  get logs(): Array<string> {
+    let value = this.get("logs");
+    return value!.toStringArray();
+  }
+
+  set logs(value: Array<string>) {
+    this.set("logs", Value.fromStringArray(value));
+  }
+
+  get nextId(): i32 {
+    let value = this.get("nextId");
+    return value!.toI32();
+  }
+
+  set nextId(value: i32) {
+    this.set("nextId", Value.fromI32(value));
   }
 }

@@ -182,6 +182,28 @@ export class prizeClaimed__Params {
   }
 }
 
+export class setAdminStateEvent extends ethereum.Event {
+  get params(): setAdminStateEvent__Params {
+    return new setAdminStateEvent__Params(this);
+  }
+}
+
+export class setAdminStateEvent__Params {
+  _event: setAdminStateEvent;
+
+  constructor(event: setAdminStateEvent) {
+    this._event = event;
+  }
+
+  get userAddr(): Address {
+    return this._event.parameters[0].value.toAddress();
+  }
+
+  get state(): boolean {
+    return this._event.parameters[1].value.toBoolean();
+  }
+}
+
 export class toggleBlockPlayerEvent extends ethereum.Event {
   get params(): toggleBlockPlayerEvent__Params {
     return new toggleBlockPlayerEvent__Params(this);
@@ -671,6 +693,40 @@ export class RenounceOwnershipCall__Outputs {
   _call: RenounceOwnershipCall;
 
   constructor(call: RenounceOwnershipCall) {
+    this._call = call;
+  }
+}
+
+export class SetAdminStateCall extends ethereum.Call {
+  get inputs(): SetAdminStateCall__Inputs {
+    return new SetAdminStateCall__Inputs(this);
+  }
+
+  get outputs(): SetAdminStateCall__Outputs {
+    return new SetAdminStateCall__Outputs(this);
+  }
+}
+
+export class SetAdminStateCall__Inputs {
+  _call: SetAdminStateCall;
+
+  constructor(call: SetAdminStateCall) {
+    this._call = call;
+  }
+
+  get userAddr(): Address {
+    return this._call.inputValues[0].value.toAddress();
+  }
+
+  get state(): boolean {
+    return this._call.inputValues[1].value.toBoolean();
+  }
+}
+
+export class SetAdminStateCall__Outputs {
+  _call: SetAdminStateCall;
+
+  constructor(call: SetAdminStateCall) {
     this._call = call;
   }
 }

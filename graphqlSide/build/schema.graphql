@@ -49,8 +49,19 @@ type User @entity {
   address: String
   totalLeagues: BigInt 
   totalLeaguesWinner: BigInt 
+  isAdmin: Boolean
   isBlocked: Boolean
 
   leaguePlayersByUser: [LeaguePlayer!]@derivedFrom(field: "user") 
   prizes: [Prize!]@derivedFrom(field: "claimableBy")
+}
+
+type Log @entity {
+  id: ID!
+  log: String!
+}
+type AllLog @entity {
+  id: ID!
+  logs: [Log!]! @relation
+  nextId: Int!
 }
